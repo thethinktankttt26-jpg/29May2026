@@ -1,17 +1,7 @@
-import { supabase } from "../supabase/client";
+import { getRetailers } from "./retailerQueries";
 
-export async function getRetailers() {
+export async function loadRetailers() {
 
-  const { data, error } =
-    await supabase
-      .from("retailers")
-      .select("*")
-      .order("retailer_name");
+  return await getRetailers();
 
-  if (error) {
-    console.error(error);
-    return [];
-  }
-
-  return data;
 }

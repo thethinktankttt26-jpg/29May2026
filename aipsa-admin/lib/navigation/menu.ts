@@ -15,31 +15,31 @@ export const menuItems = [
   {
     id: 3,
     name: "Discovery",
-    href: "#",
+    href: "/discovery",
   },
 
   {
     id: 4,
     name: "Blueprints",
-    href: "#",
+    href: "/blueprints",
   },
 
   {
     id: 5,
     name: "Validation",
-    href: "#",
+    href: "/validation",
   },
 
   {
     id: 6,
     name: "Monitoring",
-    href: "#",
+    href: "/monitoring",
   },
 
   {
     id: 7,
     name: "Settings",
-    href: "#",
+    href: "/settings",
   },
 
 ];

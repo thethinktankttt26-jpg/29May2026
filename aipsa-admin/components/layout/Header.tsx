@@ -1,7 +1,7 @@
+import UserMenu from "../auth/UserMenu";
+
 export default function Header() {
-
   return (
-
     <header
       style={{
         height: 70,
@@ -13,19 +13,9 @@ export default function Header() {
         background: "white",
       }}
     >
+      <h3>AIPSA Admin</h3>
 
-      <h3>
-        AIPSA Admin
-      </h3>
-
-      <div>
-
-        Veera
-
-      </div>
-
+      <UserMenu />
     </header>
-
   );
-
 }

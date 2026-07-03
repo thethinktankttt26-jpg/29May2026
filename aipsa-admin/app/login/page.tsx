@@ -1,23 +1,17 @@
+import LoginForm from "../../components/auth/LoginForm";
+
 export default function LoginPage() {
-
   return (
-
     <main
       style={{
-        padding: 40,
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        background: "#f5f7fb",
       }}
     >
-
-      <h1>
-        AIPSA Admin Login
-      </h1>
-
-      <p>
-        Sign in with Supabase
-      </p>
-
+      <LoginForm />
     </main>
-
   );
-
 }
