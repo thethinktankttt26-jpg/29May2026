@@ -11,7 +11,8 @@
 
         const body = await request.json();
 
-        const { url, retailerId } = body;
+        const { url, retailerId, version } = body;
+
 
         const response = await fetch(url, {
     redirect: "follow",
@@ -47,16 +48,17 @@
 
     const classified = classifyLinks(parsed.links);
 
-    const blueprint = buildBlueprint(
-    url,
-    classified
-    );
+   const blueprint = await buildBlueprint(
+  retailerId,
+  url,
+  classified
+);
 
-    await saveBlueprint(
-    retailerId,
-    blueprint
-    );
-
+   await saveBlueprint(
+  retailerId,
+  blueprint,
+  version
+);
     return NextResponse.json({
 
     success: true,

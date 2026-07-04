@@ -1,7 +1,7 @@
 import { ClassifiedLinks } from "../crawler/classifyLinks";
+import { getRetailerCategories } from "../../retailers/retailerCategoryService";
 
 export interface RetailerBlueprint {
-
   homepage: string;
 
   categories: string[];
@@ -15,22 +15,25 @@ export interface RetailerBlueprint {
   help: string[];
 
   discoveredAt: string;
-
 }
 
-export function buildBlueprint(
-
+export async function buildBlueprint(
+  retailerId: string,
   homepage: string,
-
   classified: ClassifiedLinks
+): Promise<RetailerBlueprint> {
+  const retailerCategories =
+    await getRetailerCategories(retailerId);
 
-): RetailerBlueprint {
+  console.log(
+    "Configured Retailer Categories:",
+    retailerCategories
+  );
 
   return {
-
     homepage,
 
-    categories: classified.categories,
+    categories: retailerCategories,
 
     sale: classified.sale,
 
@@ -41,7 +44,5 @@ export function buildBlueprint(
     help: classified.help,
 
     discoveredAt: new Date().toISOString(),
-
   };
-
 }
