@@ -2,13 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta property="og:image" content="https://example.com/product.jpg">
+
+  <meta
+    property="og:image"
+    content="https://example.com/product.jpg"
+  >
+
   <title>Controlled Product Sample</title>
+
+  <style>
+    body {
+      font-family: Arial;
+    }
+
+    .navigation {
+      display: flex;
+    }
+
+    .advertisement {
+      width: 100%;
+    }
+  </style>
+
+  <script>
+    window.analytics = {
+      trackingId: "large-irrelevant-tracking-payload",
+      sessionId: "irrelevant-session-data"
+    };
+  </script>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": "White Regular Fit Essential Crew Neck T-Shirt",
+      "sku": "369510",
+      "offers": {
+        "price": "8.00",
+        "priceCurrency": "GBP",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  </script>
 </head>
 
-<body>
+<body onload="startTracking()">
+
+  <!-- Large irrelevant navigation section -->
+
+  <nav class="navigation">
+    <a href="/men">Men</a>
+    <a href="/women">Women</a>
+    <a href="/children">Children</a>
+    <a href="/home">Home</a>
+  </nav>
+
+  <aside>
+    <div>Advertisement content</div>
+    <div>Recently viewed products</div>
+    <div>Recommended products</div>
+  </aside>
+
   <main>
-    <h1 class="product-name">White Regular Fit Essential Crew Neck T-Shirt</h1>
+    <h1
+      class="product-name"
+      onclick="trackProductClick()"
+    >
+      White Regular Fit Essential Crew Neck T-Shirt
+    </h1>
 
     <div class="brand">Next</div>
 
@@ -25,6 +86,26 @@
     </select>
 
     <div class="stock-status">In Stock</div>
+
+    <svg>
+      <path d="M0 0 L10 10"></path>
+    </svg>
+
+    <iframe src="https://example.com/advertisement"></iframe>
+
+    <noscript>
+      JavaScript is required.
+    </noscript>
   </main>
+
+  <footer>
+    <a href="/help">Help</a>
+    <a href="/contact">Contact</a>
+    <a href="/terms">Terms and Conditions</a>
+  </footer>
+
+  <script>
+    console.log("irrelevant application JavaScript");
+  </script>
 </body>
 </html>
