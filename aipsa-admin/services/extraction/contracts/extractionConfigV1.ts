@@ -25,8 +25,14 @@ export interface ExtractionSelector {
   attribute?: string;
 }
 
+export interface ExtractionJsonLdFilter {
+  path: string;
+  equals: string;
+}
+
 export interface ExtractionRule {
   source: ExtractionSource;
+  jsonLdFilter?: ExtractionJsonLdFilter;
   selectors: ExtractionSelector[];
   multiple: boolean;
   transforms: ExtractionTransform[];

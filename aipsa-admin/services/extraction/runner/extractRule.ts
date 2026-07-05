@@ -117,7 +117,8 @@ function normalizeJsonLdValue(
 function extractJsonLd(
   $: CheerioRoot,
   selector: string,
-  multiple: boolean
+  multiple: boolean,
+  jsonLdFilter: ExtractionRule["jsonLdFilter"]
 ): string | string[] {
   const values: string[] = [];
 
@@ -137,6 +138,20 @@ function extractJsonLd(
           : [parsed];
 
         for (const document of documents) {
+          if (jsonLdFilter) {
+            const filterValue = getValueByPath(
+              document,
+              jsonLdFilter.path
+            );
+
+            if (
+              String(filterValue ?? "") !==
+              jsonLdFilter.equals
+            ) {
+              continue;
+            }
+          }
+
           const extracted = getValueByPath(
             document,
             selector
@@ -176,7 +191,8 @@ export function extractRule(
       rawValue = extractJsonLd(
         $,
         selector,
-        rule.multiple
+        rule.multiple,
+        rule.jsonLdFilter
       );
     } else {
       rawValue = extractCssOrMeta(
