@@ -1,0 +1,195 @@
+{
+  "contractVersion": "1.0",
+  "configScope": {
+    "type": "CATEGORY",
+    "category": "Clothing"
+  },
+  "fields": {
+    "productName": {
+      "source": "JSON_LD",
+      "jsonLdFilter": {
+        "path": "@type",
+        "equals": "ProductGroup"
+      },
+      "selectors": [
+        {
+          "selector": "name"
+        }
+      ],
+      "multiple": false,
+      "transforms": [
+        "NORMALIZE_WHITESPACE"
+      ],
+      "required": true
+    },
+    "brand": {
+      "source": "JSON_LD",
+      "jsonLdFilter": {
+        "path": "@type",
+        "equals": "ProductGroup"
+      },
+      "selectors": [
+        {
+          "selector": "brand.name"
+        }
+      ],
+      "multiple": false,
+      "transforms": [
+        "TRIM"
+      ],
+      "required": true
+    },
+    "productIdentifier": {
+      "source": "JSON_LD",
+      "jsonLdFilter": {
+        "path": "@type",
+        "equals": "ProductGroup"
+      },
+      "selectors": [
+        {
+          "selector": "productGroupID"
+        }
+      ],
+      "multiple": false,
+      "transforms": [
+        "TRIM"
+      ],
+      "required": true
+    },
+    "currentPrice": {
+      "source": "JSON_LD",
+      "jsonLdFilter": {
+        "path": "@type",
+        "equals": "Product"
+      },
+      "selectors": [
+        {
+          "selector": "offers.price"
+        }
+      ],
+      "multiple": false,
+      "transforms": [
+        "PARSE_PRICE"
+      ],
+      "required": true
+    },
+    "originalPrice": {
+      "source": "CSS",
+      "selectors": [
+        {
+          "selector": ".original-price"
+        }
+      ],
+      "multiple": false,
+      "transforms": [
+        "PARSE_PRICE"
+      ],
+      "required": false
+    },
+    "currency": {
+      "source": "JSON_LD",
+      "jsonLdFilter": {
+        "path": "@type",
+        "equals": "Product"
+      },
+      "selectors": [
+        {
+          "selector": "offers.priceCurrency"
+        }
+      ],
+      "multiple": false,
+      "transforms": [
+        "PARSE_CURRENCY"
+      ],
+      "required": true
+    },
+    "primaryImage": {
+      "source": "JSON_LD",
+      "jsonLdFilter": {
+        "path": "@type",
+        "equals": "ProductGroup"
+      },
+      "selectors": [
+        {
+          "selector": "image"
+        }
+      ],
+      "multiple": false,
+      "transforms": [
+        "NORMALIZE_URL"
+      ],
+      "required": true
+    },
+    "additionalImages": {
+      "source": "JSON_LD",
+      "jsonLdFilter": {
+        "path": "@type",
+        "equals": "Product"
+      },
+      "selectors": [
+        {
+          "selector": "image"
+        }
+      ],
+      "multiple": true,
+      "transforms": [
+        "NORMALIZE_URL",
+        "DEDUPLICATE"
+      ],
+      "required": false
+    },
+    "sizes": {
+      "source": "JSON_LD",
+      "jsonLdFilter": {
+        "path": "@type",
+        "equals": "Product"
+      },
+      "selectors": [
+        {
+          "selector": "size"
+        }
+      ],
+      "multiple": true,
+      "transforms": [
+        "TRIM",
+        "DEDUPLICATE"
+      ],
+      "required": true
+    },
+    "colours": {
+      "source": "JSON_LD",
+      "jsonLdFilter": {
+        "path": "@type",
+        "equals": "Product"
+      },
+      "selectors": [
+        {
+          "selector": "color"
+        }
+      ],
+      "multiple": true,
+      "transforms": [
+        "TRIM",
+        "DEDUPLICATE"
+      ],
+      "required": true
+    },
+    "stockAvailability": {
+      "source": "JSON_LD",
+      "jsonLdFilter": {
+        "path": "@type",
+        "equals": "Product"
+      },
+      "selectors": [
+        {
+          "selector": "offers.availability"
+        }
+      ],
+      "multiple": true,
+      "transforms": [
+        "TRIM"
+      ],
+      "required": true
+    }
+  }
+}

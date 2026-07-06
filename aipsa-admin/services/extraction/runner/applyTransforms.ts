@@ -22,7 +22,17 @@ function applyStringTransform(
         .replace(/,/g, "")
         .match(/-?\d+(?:\.\d+)?/);
 
-      return normalized?.[0] ?? "";
+      if (!normalized) {
+        return "";
+      }
+
+      const numericValue = Number(normalized[0]);
+
+      if (!Number.isFinite(numericValue)) {
+        return "";
+      }
+
+      return numericValue.toFixed(2);
     }
 
     case "PARSE_CURRENCY": {
