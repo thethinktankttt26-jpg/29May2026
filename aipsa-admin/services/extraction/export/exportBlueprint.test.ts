@@ -34,7 +34,12 @@ async function runTest() {
     exportBlueprint(candidate);
 
   console.log("CONTRACT:", config.contractVersion);
-  console.log("CATEGORY:", config.configScope.category);
+  if (config.configScope.type === "CATEGORY") {
+  console.log(
+    "CATEGORY:",
+    config.configScope.category
+  );
+}
 
   console.log("\nFIELDS");
 
@@ -63,6 +68,15 @@ async function runTest() {
   if (config.configScope.type !== "CATEGORY") {
     throw new Error("Incorrect scope.");
   }
+
+  if (config.configScope.type !== "CATEGORY") {
+  throw new Error("Incorrect scope.");
+}
+
+console.log(
+  "CATEGORY:",
+  config.configScope.category
+);
 
   if (
     Object.keys(config.fields).length !== 11
