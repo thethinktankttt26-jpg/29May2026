@@ -1,12 +1,13 @@
 import {
   BlueprintRecord,
+  NewBlueprintRecord,
 } from "./blueprintRepositoryTypes";
 
 export interface BlueprintRepository {
 
   save(
-    blueprint: BlueprintRecord
-  ): Promise<void>;
+    blueprint: NewBlueprintRecord
+  ): Promise<number>;
 
   getActive(
     retailerId: string,

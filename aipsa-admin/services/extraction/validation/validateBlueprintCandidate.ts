@@ -21,22 +21,19 @@ const REQUIRED_FIELDS = [
   "stockAvailability",
 ];
 
-function hasSelectedValue(
+function hasSelectedEvidence(
   field: CandidateField | undefined
 ): boolean {
+
   if (!field?.selected) {
     return false;
   }
 
-  const value = field.selected.value;
+  return (
+    field.selected.path.trim().length > 0 &&
+    field.selected.source.length > 0
+  );
 
-  if (Array.isArray(value)) {
-    return value.some(
-      item => item.trim().length > 0
-    );
-  }
-
-  return value.trim().length > 0;
 }
 
 export function validateBlueprintCandidate(
@@ -45,11 +42,13 @@ export function validateBlueprintCandidate(
 
   const issues: ValidationIssue[] = [];
 
-  const totalFields = candidate.fields.length;
+  const totalFields =
+    candidate.fields.length;
 
-  const populatedFields = candidate.fields.filter(
-    field => hasSelectedValue(field)
-  ).length;
+  const populatedFields =
+    candidate.fields.filter(
+      field => hasSelectedEvidence(field)
+    ).length;
 
   const coveragePercentage =
     totalFields === 0
@@ -63,11 +62,15 @@ export function validateBlueprintCandidate(
         );
 
   for (const requiredField of REQUIRED_FIELDS) {
-    const field = candidate.fields.find(
-      item => item.fieldName === requiredField
-    );
+
+    const field =
+      candidate.fields.find(
+        item =>
+          item.fieldName === requiredField
+      );
 
     if (!field) {
+
       issues.push({
         field: requiredField,
         severity: "ERROR",
@@ -76,51 +79,76 @@ export function validateBlueprintCandidate(
       });
 
       continue;
+
     }
 
-    if (!hasSelectedValue(field)) {
+    if (!hasSelectedEvidence(field)) {
+
       issues.push({
         field: requiredField,
         severity: "ERROR",
         message:
-          "Required field has no selected evidence.",
+          "Required field has no selected extraction rule.",
       });
+
     }
+
   }
 
   for (const field of candidate.fields) {
+
     for (const warning of field.warnings) {
+
       issues.push({
         field: field.fieldName,
         severity: "WARNING",
         message: warning,
       });
+
     }
+
   }
 
-  const hasErrors = issues.some(
-    issue => issue.severity === "ERROR"
-  );
+  const hasErrors =
+    issues.some(
+      issue =>
+        issue.severity === "ERROR"
+    );
 
-  const hasWarnings = issues.some(
-    issue => issue.severity === "WARNING"
-  );
+  const hasWarnings =
+    issues.some(
+      issue =>
+        issue.severity === "WARNING"
+    );
 
   let status: ValidationStatus;
 
   if (hasErrors) {
+
     status = "FAILED";
+
   } else if (hasWarnings) {
+
     status = "REVIEW_REQUIRED";
+
   } else {
+
     status = "READY";
+
   }
 
   return {
+
     status,
+
     totalFields,
+
     populatedFields,
+
     coveragePercentage,
+
     issues,
+
   };
+
 }

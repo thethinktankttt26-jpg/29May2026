@@ -12,15 +12,11 @@ export type BlueprintCreatedBy =
   | "AI"
   | "ADMIN";
 
-export interface BlueprintRecord {
-
-  id: string;
+export interface NewBlueprintRecord {
 
   retailerId: string;
 
   category: string;
-
-  version: number;
 
   status: BlueprintStatus;
 
@@ -37,5 +33,14 @@ export interface BlueprintRecord {
   activatedAt: Date | null;
 
   archivedAt: Date | null;
+
+}
+
+export interface BlueprintRecord
+  extends NewBlueprintRecord {
+
+  id: string;
+
+  version: number;
 
 }

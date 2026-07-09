@@ -1,28 +1,28 @@
-export type ValidationStatus =
-  | "READY"
-  | "REVIEW_REQUIRED"
-  | "FAILED";
+    export type ValidationStatus =
+    | "READY"
+    | "REVIEW_REQUIRED"
+    | "FAILED";
 
-export interface ValidationIssue {
+    export interface ValidationIssue {
 
-  field: string;
+    field: string;
 
-  severity: "WARNING" | "ERROR";
+    severity: "WARNING" | "ERROR";
 
-  message: string;
+    message: string;
 
-}
+    }
 
-export interface BlueprintValidationResult {
+    export interface BlueprintValidationResult {
 
-  status: ValidationStatus;
+    status: ValidationStatus;
 
-  totalFields: number;
+    totalFields: number;
 
-  populatedFields: number;
+    populatedFields: number;
 
-  coveragePercentage: number;
+    coveragePercentage: number;
 
-  issues: ValidationIssue[];
+    issues: ValidationIssue[];
 
-}
+    }
