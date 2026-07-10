@@ -1,3 +1,7 @@
+import {
+  CheerioAPI,
+} from "cheerio";
+
 export interface RuntimeContext {
 
   html: string;
@@ -9,6 +13,6 @@ export interface RuntimeContext {
     string
   >;
 
-  dom: unknown;
+  dom: CheerioAPI;
 
 }

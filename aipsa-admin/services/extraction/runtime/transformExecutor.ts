@@ -18,39 +18,131 @@ export class TransformExecutor {
     return {
 
       productName:
-        values.productName as string | null ?? null,
+        this.cleanString(
+          values.productName
+        ),
 
       brand:
-        values.brand as string | null ?? null,
+        this.cleanString(
+          values.brand
+        ),
 
       productIdentifier:
-        values.productIdentifier as string | null ?? null,
+        this.cleanString(
+          values.productIdentifier
+        ),
 
       currentPrice:
-        values.currentPrice as string | null ?? null,
+        this.cleanString(
+          values.currentPrice
+        ),
 
       originalPrice:
-        values.originalPrice as string | null ?? null,
+        this.cleanString(
+          values.originalPrice
+        ),
 
       currency:
-        values.currency as string | null ?? null,
+        this.cleanString(
+          values.currency
+        ),
 
       primaryImage:
-        values.primaryImage as string | null ?? null,
+        this.cleanString(
+          values.primaryImage
+        ),
 
       additionalImages:
-        (values.additionalImages as string[]) ?? [],
+        this.cleanArray(
+          values.additionalImages
+        ),
 
       sizes:
-        (values.sizes as string[]) ?? [],
+        this.cleanArray(
+          values.sizes
+        ),
 
       colours:
-        (values.colours as string[]) ?? [],
+        this.cleanArray(
+          values.colours
+        ),
 
       stockAvailability:
-        values.stockAvailability as string | null ?? null,
+        this.cleanString(
+          values.stockAvailability
+        ),
 
     };
+
+  }
+
+  private cleanString(
+    value:
+      | string
+      | string[]
+      | null
+      | undefined
+  ): string | null {
+
+    if (
+      typeof value !==
+      "string"
+    ) {
+
+      return null;
+
+    }
+
+    const cleaned =
+      value
+        .trim()
+        .replace(
+          /\s+/g,
+          " "
+        );
+
+    return cleaned.length > 0
+      ? cleaned
+      : null;
+
+  }
+
+  private cleanArray(
+    value:
+      | string
+      | string[]
+      | null
+      | undefined
+  ): string[] {
+
+    if (
+      !Array.isArray(
+        value
+      )
+    ) {
+
+      return [];
+
+    }
+
+    return [
+      ...new Set(
+        value
+          .map(
+            item =>
+              item
+                .trim()
+                .replace(
+                  /\s+/g,
+                  " "
+                )
+          )
+          .filter(
+            item =>
+              item.length > 0
+          )
+      ),
+    ];
 
   }
 

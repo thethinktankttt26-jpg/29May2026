@@ -18,10 +18,31 @@ async function runTest() {
     config.configScope.type
   );
 
+ if (
+  config.configScope.type ===
+  "CATEGORY"
+) {
+
   console.log(
+
     "CATEGORY:",
-    config.configScope.category
+
+    config.configScope.category,
+
   );
+
+}
+else {
+
+  console.log(
+
+    "CATEGORY:",
+
+    "SHARED",
+
+  );
+
+}
 
   console.log(
     "FIELD COUNT:",

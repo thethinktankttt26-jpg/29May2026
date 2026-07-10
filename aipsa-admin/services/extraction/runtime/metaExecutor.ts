@@ -6,12 +6,24 @@ import {
   RuntimeExtractionResult,
 } from "./runtimeExecutionTypes";
 
+import {
+  RuntimeContextBuilder,
+} from "./runtimeContextBuilder";
+
 export class MetaExecutor {
+
+  private readonly contextBuilder =
+    new RuntimeContextBuilder();
 
   execute(
     stage: CompiledStage,
-    _html: string
+    html: string
   ): RuntimeExtractionResult {
+
+    const context =
+      this.contextBuilder.build(
+        html
+      );
 
     const values:
       Record<
@@ -20,13 +32,43 @@ export class MetaExecutor {
       > = {};
 
     for (
-      const field
-      of Object.keys(
+      const [
+        fieldName,
+        compiledField,
+      ]
+      of Object.entries(
         stage.fields
       )
     ) {
 
-      values[field] = null;
+      let value:
+        string | string[] | null =
+        null;
+
+      if (
+        compiledField.source ===
+        "META"
+      ) {
+
+        const selector =
+          compiledField.selectors[0]
+            ?.selector;
+
+        if (
+          selector
+        ) {
+
+          value =
+            context.metaTags.get(
+              selector
+            ) ?? null;
+
+        }
+
+      }
+
+      values[fieldName] =
+        value;
 
     }
 
