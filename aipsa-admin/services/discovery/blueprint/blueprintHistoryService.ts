@@ -20,32 +20,26 @@ export async function archiveCurrentBlueprint(
 
   // 2. Archive the current version
 
- const { error: archiveError } =
-  await supabase
-    .from("retailer_blueprint_versions")
-    .upsert(
-      {
-        retailer_id: currentBlueprint.retailer_id,
-        blueprint: currentBlueprint.blueprint,
-        version: currentBlueprint.version,
-        confidence_score: currentBlueprint.confidence_score,
-        status: currentBlueprint.status,
-      },
-      {
-        onConflict: "retailer_id,version",
-        ignoreDuplicates: true,
-      }
-    );
-
-if (archiveError) {
-  throw archiveError;
-}
-
-return currentBlueprint;
+  const { error: archiveError } =
+    await supabase
+      .from("retailer_blueprint_versions")
+      .upsert(
+        {
+          retailer_id: currentBlueprint.retailer_id,
+          blueprint: currentBlueprint.blueprint,
+          version: currentBlueprint.version,
+          confidence_score: currentBlueprint.confidence_score,
+          status: currentBlueprint.status,
+        },
+        {
+          onConflict: "retailer_id,version",
+          ignoreDuplicates: true,
+        }
+      );
 
   if (archiveError) {
     throw archiveError;
   }
 
-  return archivedBlueprint;
+  return currentBlueprint;
 }

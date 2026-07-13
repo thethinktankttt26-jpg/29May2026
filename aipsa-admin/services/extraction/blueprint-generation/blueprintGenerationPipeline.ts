@@ -3,6 +3,14 @@ import {
 } from "../ai/aiLearningEngine";
 
 import {
+  MockAiProvider,
+} from "../ai/mockAiProvider";
+
+import {
+  SupabaseBlueprintRepository,
+} from "../repository/supabaseBlueprintRepository";
+
+import {
   BlueprintGenerationRequest,
   BlueprintGenerationResult,
 } from "./blueprintGenerationTypes";
@@ -12,35 +20,38 @@ export class BlueprintGenerationPipeline {
   constructor(
 
     private readonly learningEngine =
-      new AiLearningEngine(),
+      new AiLearningEngine(
+        new MockAiProvider(),
+        new SupabaseBlueprintRepository(),
+      ),
 
   ) {}
 
   async generate(
-    request:
-      BlueprintGenerationRequest
-  ): Promise<
-    BlueprintGenerationResult
-  > {
+    request: BlueprintGenerationRequest
+  ): Promise<BlueprintGenerationResult> {
 
     /*
-      Phase 5.5.4
+      Phase 5 Blueprint Generation Pipeline
 
       Acquisition
-
-      ↓
-
+            ↓
       Reduction
-
-      ↓
-
+            ↓
       AI Learning
+            ↓
+      Validation
+            ↓
+      Approval
+            ↓
+      Repository
 
-      These stages are connected
-      here. In the next sprint,
-      the Acquisition and Reduction
-      outputs will be passed into
-      the learning engine.
+      NOTE:
+      The Acquisition and Reduction stages will
+      provide the reducedHtml during Phase 6
+      onboarding. For now we use an empty string
+      to keep the pipeline aligned with the new
+      AiLearningEngine contract.
     */
 
     const learning =
@@ -52,12 +63,14 @@ export class BlueprintGenerationPipeline {
         category:
           request.category,
 
+        reducedHtml: "",
+
       });
 
     return {
 
       blueprint:
-        learning.blueprint,
+        learning.extractionConfig,
 
       confidence:
         learning.confidence,

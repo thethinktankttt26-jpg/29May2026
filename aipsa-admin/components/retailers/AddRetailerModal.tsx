@@ -34,7 +34,7 @@ export default function AddRetailerModal({
   const [name, setName] = useState("");
   const [baseUrl, setBaseUrl] = useState("");
   const [saleUrl, setSaleUrl] = useState("");
-  const [country, setCountry] = useState(COUNTRIES[0]);
+  const [country, setCountry] = useState<string>('United Kingdom');
   const [status, setStatus] = useState("APPROVED");
   const [active, setActive] = useState(true);
 
