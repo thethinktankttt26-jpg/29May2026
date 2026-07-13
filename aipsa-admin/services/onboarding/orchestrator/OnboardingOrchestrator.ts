@@ -1,8 +1,4 @@
 import {
-  RepresentativeSelectionEngine,
-} from "../representative-selection";
-
-import {
   WorkflowEngine,
   WorkflowState,
 } from "../engine";
@@ -22,8 +18,6 @@ export class OnboardingOrchestrator {
     private readonly workflow =
       new WorkflowEngine(),
 
-    private readonly representativeSelection =
-      new RepresentativeSelectionEngine(),
 
   ) {}
 
@@ -45,7 +39,7 @@ export class OnboardingOrchestrator {
     */
 
     let current =
-      WorkflowState.DISCOVERY;
+  WorkflowState.ELIGIBILITY;
 
     while (
       !this.workflow.isCompleted(
@@ -53,63 +47,54 @@ export class OnboardingOrchestrator {
       )
     ) {
 
-      switch (current) {
+     switch (current) {
 
-        case WorkflowState.DISCOVERY:
+  case WorkflowState.ELIGIBILITY:
 
-          /*
-            Phase 6.5
-            Discovery integration.
-          */
+    /*
+      Phase 6.1
+      Onboarding Eligibility Engine.
+    */
 
-          break;
+    break;
 
-        case WorkflowState.REPRESENTATIVE_SELECTION:
+  case WorkflowState.ONBOARDING_SESSION:
 
-          this.representativeSelection.select({
+    /*
+      Phase 6.2
+      Create onboarding session.
+    */
 
-            retailerId:
-              request.retailerId,
+    break;
 
-            candidates: [],
+  case WorkflowState.RUNTIME_CONFIGURATION:
 
-          });
+    /*
+      Phase 6.3
+      Runtime Configuration Generator.
+    */
 
-          break;
+    break;
 
-        case WorkflowState.BLUEPRINT_GENERATION:
+  case WorkflowState.RUNTIME_VALIDATION:
 
-          /*
-            Connect Blueprint Factory.
-          */
+    /*
+      Phase 6.4
+      Runtime Validation.
+    */
 
-          break;
+    break;
 
-        case WorkflowState.VALIDATION:
+  case WorkflowState.ACTIVATION:
 
-          /*
-            Connect Validation Engine.
-          */
+    /*
+      Phase 6.5
+      Retailer Activation.
+    */
 
-          break;
+    break;
 
-        case WorkflowState.APPROVAL:
-
-          /*
-            Connect Approval Workflow.
-          */
-
-          break;
-
-        case WorkflowState.ACTIVATION:
-
-          /*
-            Connect Repository Activation.
-          */
-
-          break;
-
-      }
+}
 
       const next =
         this.workflow.next(current);

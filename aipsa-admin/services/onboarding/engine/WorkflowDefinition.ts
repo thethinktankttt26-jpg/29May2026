@@ -3,19 +3,16 @@ import { WorkflowState } from "./WorkflowState";
 export const WORKFLOW_TRANSITIONS:
   Record<WorkflowState, WorkflowState | null> = {
 
-  [WorkflowState.DISCOVERY]:
-    WorkflowState.REPRESENTATIVE_SELECTION,
+  [WorkflowState.ELIGIBILITY]:
+    WorkflowState.ONBOARDING_SESSION,
 
-  [WorkflowState.REPRESENTATIVE_SELECTION]:
-    WorkflowState.BLUEPRINT_GENERATION,
+  [WorkflowState.ONBOARDING_SESSION]:
+    WorkflowState.RUNTIME_CONFIGURATION,
 
-  [WorkflowState.BLUEPRINT_GENERATION]:
-    WorkflowState.VALIDATION,
+  [WorkflowState.RUNTIME_CONFIGURATION]:
+    WorkflowState.RUNTIME_VALIDATION,
 
-  [WorkflowState.VALIDATION]:
-    WorkflowState.APPROVAL,
-
-  [WorkflowState.APPROVAL]:
+  [WorkflowState.RUNTIME_VALIDATION]:
     WorkflowState.ACTIVATION,
 
   [WorkflowState.ACTIVATION]:
