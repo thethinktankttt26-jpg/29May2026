@@ -11,6 +11,10 @@ import {
   OnboardingResult,
 } from "./OnboardingResult";
 
+import {
+  OnboardingEligibilityEngine,
+} from "../eligibility";
+
 export class OnboardingOrchestrator {
 
   constructor(
@@ -18,6 +22,8 @@ export class OnboardingOrchestrator {
     private readonly workflow =
       new WorkflowEngine(),
 
+    private readonly eligibility =
+      new OnboardingEligibilityEngine(),
 
   ) {}
 
@@ -26,75 +32,81 @@ export class OnboardingOrchestrator {
   ): Promise<OnboardingResult> {
 
     /*
-      Phase 6.4
+      Phase 6
 
-      The orchestration skeleton.
+      Operational onboarding workflow.
 
-      Existing services will be connected
-      incrementally during later phases.
-
-      At this milestone we prove that one
-      orchestrator coordinates the entire
-      onboarding lifecycle.
+      Business services will be connected
+      incrementally as Phase 6 progresses.
     */
 
     let current =
-  WorkflowState.ELIGIBILITY;
+      WorkflowState.ELIGIBILITY;
 
     while (
-      !this.workflow.isCompleted(
-        current
-      )
+      !this.workflow.isCompleted(current)
     ) {
 
-     switch (current) {
+      switch (current) {
 
-  case WorkflowState.ELIGIBILITY:
+        case WorkflowState.ELIGIBILITY: {
 
-    /*
-      Phase 6.1
-      Onboarding Eligibility Engine.
-    */
+          const eligibility =
+            await this.eligibility.evaluate(
+              request.retailerId
+            );
 
-    break;
+          /*
+            Phase 6.1.3
 
-  case WorkflowState.ONBOARDING_SESSION:
+            We'll use the eligibility
+            result to determine whether
+            onboarding continues or stops.
+          */
 
-    /*
-      Phase 6.2
-      Create onboarding session.
-    */
+          void eligibility;
 
-    break;
+          break;
 
-  case WorkflowState.RUNTIME_CONFIGURATION:
+        }
 
-    /*
-      Phase 6.3
-      Runtime Configuration Generator.
-    */
+        case WorkflowState.ONBOARDING_SESSION:
 
-    break;
+          /*
+            Phase 6.2
+            Create onboarding session.
+          */
 
-  case WorkflowState.RUNTIME_VALIDATION:
+          break;
 
-    /*
-      Phase 6.4
-      Runtime Validation.
-    */
+        case WorkflowState.RUNTIME_CONFIGURATION:
 
-    break;
+          /*
+            Phase 6.3
+            Generate runtime configuration.
+          */
 
-  case WorkflowState.ACTIVATION:
+          break;
 
-    /*
-      Phase 6.5
-      Retailer Activation.
-    */
+        case WorkflowState.RUNTIME_VALIDATION:
 
-    break;
+          /*
+            Phase 6.4
+            Validate runtime configuration.
+          */
 
-}
+          break;
+
+        case WorkflowState.ACTIVATION:
+
+          /*
+            Phase 6.5
+            Activate retailer.
+          */
+
+          break;
+
+      }
 
       const next =
         this.workflow.next(current);
