@@ -61,7 +61,21 @@ export class InMemoryBlueprintRepository
       ) ?? null
     );
 
+    
+
   }
+
+  async hasActiveBlueprint(
+  retailerId: string
+): Promise<boolean> {
+
+  return this.blueprints.some(
+    blueprint =>
+      blueprint.retailerId === retailerId &&
+      blueprint.status === "ACTIVE"
+  );
+
+}
 
   async getVersion(
     retailerId: string,

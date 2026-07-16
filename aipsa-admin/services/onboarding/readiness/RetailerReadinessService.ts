@@ -2,40 +2,62 @@ import {
   RetailerReadiness,
 } from "./RetailerReadiness";
 
+import {
+  retailerExists,
+  retailerEnabled,
+} from "../../retailers/retailerService";
+
+import {
+  SupabaseBlueprintRepository,
+} from "../../extraction/repository/supabaseBlueprintRepository";
+
 export class RetailerReadinessService {
+
+  constructor(
+    private readonly blueprintRepository =
+      new SupabaseBlueprintRepository(),
+  ) {}
 
   async evaluate(
     retailerId: string
   ): Promise<RetailerReadiness> {
 
-    /*
-      Phase 6.1.3
+    const exists =
+      await retailerExists(retailerId);
 
-      This service centralises all
-      operational readiness checks.
+    const enabled =
+      exists
+        ? await retailerEnabled(retailerId)
+        : false;
 
-      Integrations will be connected
-      incrementally.
+    const blueprintApproved =
+      exists
+        ? await this.blueprintRepository.hasActiveBlueprint(
+            retailerId
+          )
+        : false;
 
-      Planned checks
+    const reasons: string[] = [];
 
-      • Retailer exists
-      • Retailer enabled
-      • Blueprint approved
-      • Extraction configuration approved
-      • Retailer ACTIVE
-      • Onboarding already running
-    */
+    if (!exists) {
+      reasons.push("Retailer does not exist.");
+    }
 
-    void retailerId;
+    if (exists && !enabled) {
+      reasons.push("Retailer is disabled.");
+    }
+
+    if (exists && !blueprintApproved) {
+      reasons.push("No active blueprint found.");
+    }
 
     return {
 
-      retailerExists: true,
+      retailerExists: exists,
 
-      retailerEnabled: true,
+      retailerEnabled: enabled,
 
-      blueprintApproved: true,
+      blueprintApproved,
 
       extractionConfigurationApproved: true,
 
@@ -43,9 +65,9 @@ export class RetailerReadinessService {
 
       onboardingRunning: false,
 
-      ready: true,
+      ready: reasons.length === 0,
 
-      reasons: [],
+      reasons,
 
     };
 

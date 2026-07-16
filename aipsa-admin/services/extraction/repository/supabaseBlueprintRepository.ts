@@ -41,8 +41,8 @@ export class SupabaseBlueprintRepository
   }
 
   async save(
-  blueprint: NewBlueprintRecord
-): Promise<number> {
+    blueprint: NewBlueprintRecord
+  ): Promise<number> {
 
     const version =
       await this.getNextVersion(
@@ -113,6 +113,26 @@ export class SupabaseBlueprintRepository
         ? new Date(data.archived_at)
         : null,
     };
+
+  }
+
+  async hasActiveBlueprint(
+    retailerId: string
+  ): Promise<boolean> {
+
+    const { data, error } = await supabase
+      .from("extraction_blueprints")
+      .select("id")
+      .eq("retailer_id", retailerId)
+      .eq("status", "ACTIVE")
+      .limit(1)
+      .maybeSingle();
+
+    if (error) {
+      throw error;
+    }
+
+    return data !== null;
 
   }
 

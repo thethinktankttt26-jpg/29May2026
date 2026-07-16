@@ -14,6 +14,10 @@ export interface BlueprintRepository {
     category: string
   ): Promise<BlueprintRecord | null>;
 
+  hasActiveBlueprint(
+    retailerId: string
+  ): Promise<boolean>;
+
   getVersion(
     retailerId: string,
     category: string,
