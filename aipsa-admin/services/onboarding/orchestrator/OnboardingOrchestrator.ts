@@ -15,17 +15,31 @@ import {
   OnboardingEligibilityEngine,
 } from "../eligibility";
 
+import {
+  OnboardingSessionService,
+} from "../session";
+
+import {
+  RuntimeConfigurationService,
+} from "../runtime";
+
 export class OnboardingOrchestrator {
 
-  constructor(
+constructor(
 
-    private readonly workflow =
-      new WorkflowEngine(),
+  private readonly workflow =
+    new WorkflowEngine(),
 
-    private readonly eligibility =
-      new OnboardingEligibilityEngine(),
+  private readonly eligibility =
+    new OnboardingEligibilityEngine(),
 
-  ) {}
+  private readonly onboardingSession =
+    new OnboardingSessionService(),
+
+private readonly runtimeConfiguration =
+  new RuntimeConfigurationService(),
+
+) {}
 
   async onboard(
     request: OnboardingRequest
@@ -70,23 +84,42 @@ export class OnboardingOrchestrator {
 
         }
 
-        case WorkflowState.ONBOARDING_SESSION:
+        case WorkflowState.ONBOARDING_SESSION: {
 
-          /*
-            Phase 6.2
-            Create onboarding session.
-          */
+  const session =
+    await this.onboardingSession.start(
+      request.retailerId
+    );
 
-          break;
+  /*
+    Future milestones will
+    persist this session.
+  */
 
-        case WorkflowState.RUNTIME_CONFIGURATION:
+  void session;
 
-          /*
-            Phase 6.3
-            Generate runtime configuration.
-          */
+  break;
 
-          break;
+}
+
+  case WorkflowState.RUNTIME_CONFIGURATION: {
+
+  const runtime =
+  await this.runtimeConfiguration.generate(
+  request.retailerId,
+  request.category
+);
+
+  /*
+    Phase 6.4 will validate this runtime
+    configuration before activation.
+  */
+
+  void runtime;
+
+  break;
+
+}
 
         case WorkflowState.RUNTIME_VALIDATION:
 
