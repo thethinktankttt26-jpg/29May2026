@@ -2,23 +2,31 @@ import {
   RuntimeConfiguration,
 } from "./RuntimeConfiguration";
 
+import {
+  SupabaseBlueprintRepository,
+} from "../../extraction/repository/supabaseBlueprintRepository";
+
 export class RuntimeConfigurationService {
+
+  private readonly blueprintRepository =
+    new SupabaseBlueprintRepository();
 
   async generate(
     retailerId: string,
     category: string
   ): Promise<RuntimeConfiguration> {
 
-    /*
-      Phase 6.3
+    const blueprint =
+      await this.blueprintRepository.getActive(
+        retailerId,
+        category
+      );
 
-      Placeholder implementation.
-
-      Phase 6.4 will replace this with the
-      production implementation that loads
-      the active blueprint and extraction
-      configuration.
-    */
+    if (!blueprint) {
+      throw new Error(
+        `No active blueprint found for retailer '${retailerId}' and category '${category}'.`
+      );
+    }
 
     return {
 
@@ -26,11 +34,12 @@ export class RuntimeConfigurationService {
 
       category,
 
-      blueprintId: "",
+      blueprintId: blueprint.id,
 
-      blueprintVersion: 1,
+      blueprintVersion: blueprint.version,
 
-      extractionConfig: {} as any,
+      extractionConfig:
+        blueprint.extractionConfig,
 
       generatedAt: new Date(),
 

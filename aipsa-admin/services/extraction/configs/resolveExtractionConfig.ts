@@ -1,7 +1,7 @@
 import path from "path";
 
 export async function resolveExtractionConfig(
-  retailerId: string
+  category: string
 ): Promise<string> {
 
   /*
@@ -9,12 +9,15 @@ export async function resolveExtractionConfig(
 
     Temporary implementation.
 
+    Today all categories use the same
+    approved extraction configuration.
+
     Future versions will resolve the
-    active configuration from Blueprint,
-    category mapping and Supabase.
+    active configuration based on
+    category, retailer and blueprint.
   */
 
-  void retailerId;
+  void category;
 
   return path.resolve(
     process.cwd(),
